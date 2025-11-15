@@ -1,0 +1,22 @@
+{
+  "name": "cf-ai-travel-planner",
+  "main": "src/index.js",
+  "compatibility_date": "2024-05-01",
+  "ai": {
+    "binding": "AI"
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "TRIP_MEMORY",
+        "class_name": "TripMemory"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["TripMemory"]
+    }
+  ]
+}
