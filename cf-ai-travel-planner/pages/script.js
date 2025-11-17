@@ -1,4 +1,5 @@
-// !!! PASTE YOUR WORKER URL HERE !!!
+const md = window.markdownit();
+
 const WORKER_URL = 'https://cf-ai-travel-planner.chiragsreedh.workers.dev';
 
 const sendButton = document.getElementById('send-button');
@@ -16,12 +17,10 @@ async function sendMessage() {
     const messageText = messageInput.value.trim();
     if (messageText === '') return;
 
-    // Display the user's message
     addMessageToChatLog(messageText, 'user');
     messageInput.value = '';
 
     try {
-        // Send the message to the Worker backend
         const response = await fetch(WORKER_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -34,7 +33,6 @@ async function sendMessage() {
 
         const data = await response.json();
         
-        // Display the AI's response
         addMessageToChatLog(data.response, 'assistant');
 
     } catch (error) {
@@ -46,7 +44,14 @@ async function sendMessage() {
 function addMessageToChatLog(text, sender) {
     const messageElement = document.createElement('div');
     messageElement.classList.add('message', sender);
-    messageElement.textContent = text;
+
+    if (sender === 'user') {
+        messageElement.textContent = text;
+    } else {
+        const html = md.render(text);
+        messageElement.innerHTML = html;
+    }
+
     chatLog.appendChild(messageElement);
-    chatLog.scrollTop = chatLog.scrollHeight; // Auto-scroll to bottom
+    chatLog.scrollTop = chatLog.scrollHeight; 
 }
